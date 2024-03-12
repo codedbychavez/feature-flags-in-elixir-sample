@@ -38,12 +38,11 @@ defmodule ElixchatWeb.ChatRoomChannel do
   end
 
   defp push_messages(socket) do
-    # Determine the feature flag value dynamically
-    # feature_flag_value = MyApp.FeatureFlag.enabled?(:my_feature)
-
-    # Set the variable and create a message to send to the client
-    # variable_value = if feature_flag_value, do: "Enabled", else: "Disabled"
-    message_cta_text = "Read Now"
+    message_cta_text =
+      case ConfigCat.get_value("myfeatureflag", false) do
+        true  -> "Read Now"
+        false -> "Read More"
+      end
 
     # Create a message to send to the client
     message = %{
