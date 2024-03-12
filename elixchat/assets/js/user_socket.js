@@ -11,6 +11,7 @@ socket.connect()
 // Set the channel
 let channel = socket.channel("chat_room:lobby", {})
 
+// Join the channel
 channel.join()
   .receive("ok", resp => {
     console.log("Joined successfully", resp);
@@ -18,10 +19,11 @@ channel.join()
     // Send a message to request messages after joining
     channel.push("get_messages_after_join", {});
 
+    // Get the feature flag value
     channel.on("feature_flag", payload => {
       const featureFlagValue = payload.value;
-      // Update the color of the button
       if (featureFlagValue === true) {
+        // Set the chatButton color
         chatButton.css('background-color', 'rgb(244 63 94)');
       }
     });
@@ -30,6 +32,7 @@ channel.join()
     channel.on("messages", payload => {
       for (let i = 0; i < payload.messages.length; i++) {
         let message = payload.messages[i];
+        // Append messages to the UI
         list.append(`
         <div class="message-card">
           <b>${message.sender}</b>
@@ -46,13 +49,15 @@ channel.join()
 
 // Listen for the feature flag change event
 channel.on("feature_flag_changed", payload => {
+
   // Handle the feature flag change
   const featureFlagValue = payload.feature_flag_value;
-  console.log('Updated', featureFlagValue)
+
   if (featureFlagValue === true) {
+    // Set the chatButton color
     chatButton.css('background-color', 'rgb(244 63 94)');
   } else {
-    // Reset the button
+    // Reset the button color
     chatButton.css('background-color', 'rgb(99 102 241)');
   }
 });
