@@ -11,10 +11,13 @@ end
 
 defmodule ElixchatWeb.ChatRoomChannel do
   use ElixchatWeb, :channel
+  import ConfigSubscriber
 
   @impl true
   def join("chat_room:lobby", payload, socket) do
     if authorized?(payload) do
+      # Subscribe to config changes when the client joins
+      ConfigSubscriber.subscribe_to_config_changes(self())
       {:ok, socket}
     else
       {:error, %{reason: "unauthorized"}}
@@ -37,26 +40,32 @@ defmodule ElixchatWeb.ChatRoomChannel do
     {:noreply, socket}
   end
 
-  defp push_messages(socket) do
-    message_cta_text =
-      case ConfigCat.get_value("myfeatureflag", false) do
-        true  -> "Read Now"
-        false -> "Read More"
-      end
+  @impl true
+  def handle_info({:config_changed, config}, socket) do
+    # Extract the value of the feature flag from the config
+    feature_flag_value = Map.get(config, "feature_flag_value", false)
 
-    # Create a message to send to the client
+    # Notify the client about the feature flag change
+    broadcast(socket, "feature_flag_changed", %{feature_flag_value: feature_flag_value})
+    {:noreply, socket}
+  end
+
+  defp push_messages(socket) do
+    feature_flag_value =
+      ConfigCat.get_value("myfeatureflag", false)
+
     message = %{
       event: "messages",
       messages: [
         %Message{id: 1, sender: "Joe", text: "Hi, this is Joe, please call me. Thanks"},
         %Message{id: 2, sender: "Suzan", text: "Suzan here, When should we start the meeting?"},
         %Message{id: 3, sender: "Ann", text: "Its Ann, 10AM appointment still on."}
-      ],
-      message_cta_text: message_cta_text
+      ]
     }
 
-    # Push messages to the client
+    # Push messages and feature flag to the client
     push(socket, "messages", message)
+    push(socket, "feature_flag", %{value: feature_flag_value})
   end
 
   # Add authorization logic here as required.
