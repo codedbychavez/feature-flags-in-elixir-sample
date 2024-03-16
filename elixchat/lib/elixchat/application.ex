@@ -13,7 +13,6 @@ defmodule Elixchat.Application do
       {Phoenix.PubSub, name: Elixchat.PubSub},
       # Start the Finch HTTP client for sending emails
       {Finch, name: Elixchat.Finch},
-      {ConfigCat, [sdk_key: System.get_env("CONFIGCAT_SDK_KEY")]},
       # Start a worker by calling: Elixchat.Worker.start_link(arg)
       # {Elixchat.Worker, arg},
       # Start to serve requests, typically the last entry
