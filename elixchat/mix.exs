@@ -55,7 +55,6 @@ defmodule Elixchat.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.2"},
-      {:configcat, "~> 4.0"},
       {:dotenv, "~> 3.1.0"}
     ]
   end
