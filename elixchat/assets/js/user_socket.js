@@ -5,6 +5,19 @@ let socket = new Socket("/socket")
 let list = $('#messages');
 let chatButton = $('#chat-button');
 
+function trackPurpleButtonClick() {
+  console.log('trackPurpleButtonClick');
+  amplitude.getInstance().logEvent('PURPLE_BUTTON_CLICKED');
+}
+
+function trackRedButtonClick() {
+  console.log('trackRedButtonClick');
+  amplitude.getInstance().logEvent('RED_BUTTON_CLICKED');
+}
+
+// Add default click event listener to the chatButton
+chatButton.on("click", trackPurpleButtonClick);
+
 // Connect to the socket:
 socket.connect()
 
@@ -25,6 +38,12 @@ channel.join()
       if (featureFlagValue === true) {
         // Set the chatButton color
         chatButton.css('background-color', 'rgb(244 63 94)');
+
+        // Remove the previous event
+        chatButton.off("click", trackPurpleButtonClick);
+
+        // Add the new event
+        chatButton.on('click', trackRedButtonClick);
       }
     });
 
@@ -56,9 +75,21 @@ channel.on("feature_flag_changed", payload => {
   if (featureFlagValue === true) {
     // Set the chatButton color
     chatButton.css('background-color', 'rgb(244 63 94)');
+
+    // Remove the previous event
+    chatButton.off("click", trackPurpleButtonClick);
+
+    // Add the new event
+    chatButton.on('click', trackRedButtonClick);
   } else {
     // Reset the button color
     chatButton.css('background-color', 'rgb(99 102 241)');
+
+    // Remove the previous event
+    chatButton.off("click", trackRedButtonClick);
+
+    // Add the new event
+    chatButton.on('click', trackPurpleButtonClick);
   }
 });
 

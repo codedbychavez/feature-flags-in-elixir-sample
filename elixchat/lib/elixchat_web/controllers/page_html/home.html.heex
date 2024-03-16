@@ -1,5 +1,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 
+<script type="text/javascript" src="https://cdn.amplitude.com/libs/amplitude-7.2.1-min.gz.js"></script>
+
+<script>
+
+</script>
+
+<script type="text/javascript">
+  amplitude.getInstance().init('<%= System.get_env("AMPLITUDE_API_KEY") %>');
+</script>
+
+
 <div class="h-12 bg-stone-900 flex items-center px-4 py-2">
   <div class="brand-wrapper">
     <span class="text-lg font-black text-gray-50">ElixChat</span>
@@ -7,6 +18,7 @@
 </div>
 
 <div class="container">
+
   <section class="mt-8">
     <div id="messages" class="messages"></div>
     <div class="chat-button-wrapper">
