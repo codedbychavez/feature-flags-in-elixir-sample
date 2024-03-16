@@ -11,7 +11,6 @@ end
 
 defmodule ElixchatWeb.ChatRoomChannel do
   use ElixchatWeb, :channel
-  import ConfigSubscriber
 
   @impl true
   def join("chat_room:lobby", payload, socket) do
