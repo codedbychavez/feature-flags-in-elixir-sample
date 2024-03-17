@@ -1,6 +1,6 @@
 # Elixchat
 
-Using feature flags in Elixir sample
+Using feature flags in Elixir sample.
 
 To start your Phoenix server:
 
