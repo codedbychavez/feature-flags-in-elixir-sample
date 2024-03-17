@@ -1,5 +1,7 @@
 # Elixchat
 
+Using feature flags in Elixir sample
+
 To start your Phoenix server:
 
   * Run `mix setup` to install and setup dependencies
