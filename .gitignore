@@ -38,3 +38,14 @@ npm-debug.log
 # Ignore .env files
 *.env
 
+/_build
+/cover
+/deps
+/doc
+/.fetch
+erl_crash.dump
+*.ez
+*.beam
+/config/*.secret.exs
+.elixir_ls/
+
